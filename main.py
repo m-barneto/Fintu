@@ -126,7 +126,7 @@ def post_data():
         # zone not occupied
         pass
 
-    if time.time() > timeout:
+    if time.time() > timeout and event_zone_occupied:
         timeout = time.time() + 15
         print(f"Event Conf Min: {tracker.tracker[zone][2].get_min()}")
         print(f"Event Conf Max: {tracker.tracker[zone][2].get_max()}")
