@@ -66,6 +66,10 @@ def get_confidence(attributes):
             return float(attribute["#text"])
     return None
 
+def get_duration(latest_event):
+
+    pass
+
 def ok():
     return {}, 200
 
@@ -138,6 +142,7 @@ def post_data():
             print(f"Event Conf Mean: {tracker.tracker[zone][2].get_mean()}")
             print(f"Event Conf Median: {tracker.tracker[zone][2].get_median()}")
             print(f"Event Conf Latest: {tracker.tracker[zone][2].conf[-1]}")
+            print(tracker.tracker[zone][1])
             print()
 
 
