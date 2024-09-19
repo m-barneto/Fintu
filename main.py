@@ -30,20 +30,22 @@ class Tracker:
     def ensure_zone_exists(self, zone):
         if zone not in self.tracker:
             print(f"Created zone {zone}")
-            self.tracker[zone] = (None, None)
+            self.tracker[zone] = (None, None, None)
     
     def is_zone_occupied(self, zone):
-        first, second = self.tracker.get(zone, (None, None))
+        first, second, third = self.tracker.get(zone, (None, None, None))
         return first != None
     
     def set_zone_empty(self, zone):
-        self.tracker[zone] = (None, None)
+        self.tracker[zone] = (None, None, None)
     
     def set_zone_occupied(self, zone, first_event):
-        self.tracker[zone] = (first_event, None)
+        self.tracker[zone] = (first_event, None, ZoneState(int(first_event["Events"]["event"]["confidence"])))
     
     def update_zone_last_event(self, zone, last_event):
-        self.tracker[zone] = (self.tracker[zone][0], last_event)
+        state = self.tracker[zone][2]
+        state.conf.append(int(last_event["Events"]["event"]["confidence"]))
+        self.tracker[zone] = (self.tracker[zone][0], last_event, state)
 
 
 tracker = Tracker()
@@ -94,10 +96,11 @@ def post_data():
         if event_zone_occupied:
             # if its occupied, we want to update the last_event with this event
             tracker.update_zone_last_event(zone, event)
+            print(f"Event {tracker.tracker[zone][2]}")
         else:
             # was occupied, this event says its not, so we need to send out our notif!!!
             print("HOLY MOLY ItS HAPPENING!!!!!!")
-            print(f"Event {tracker.tracker[zone]}")
+            print(f"Event {tracker.tracker[zone][2]}")
             tracker.set_zone_empty(zone)
             print(f"Set {zone} as empty.")
             pass
