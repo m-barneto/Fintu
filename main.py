@@ -55,6 +55,10 @@ def post_data():
         print("event wasnt an alarm")
         return ok()
     
+    if "spy-name" not in data["Events"]["event"]:
+        print(json.dumps(data["Events"]["event"], indent=4))
+        return ok()
+
     zone = data["Events"]["event"]["spy-name"]
     print(zone + " event")
 
