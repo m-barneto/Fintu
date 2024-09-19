@@ -8,6 +8,10 @@ books = [{'id': 1, 'title': 'Python Essentials', 'author': 'Jane Doe'}]
 
 ongoing = {}
 
+timestr = time.strftime("%Y%m%d-%H%M%S")
+
+file = open(f'{timestr}.txt', 'w')
+
 @app.route('/', methods=['GET'])
 def get_books():
     return jsonify({'books': books})
@@ -20,8 +24,8 @@ def post_data():
                     message= "Success",
                     statusCode= 200,
                     data = data), 200
-
-    print(json.dumps(data, indent=4))
+    
+    file.write(json.dumps(data, indent=4))
 
     # for event in data["Events"]["event"]:
     #     if (event["status"] != "new"):
@@ -40,3 +44,4 @@ if __name__ == '__main__':
     log = logging.getLogger('werkzeug')
     log.setLevel(logging.ERROR)
     app.run(debug=True, port=5050)
+    file.close()
