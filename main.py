@@ -1,3 +1,4 @@
+from datetime import time
 import logging
 from flask import Flask, jsonify, request
 import json
@@ -19,7 +20,7 @@ def post_data():
                     message= "Success",
                     statusCode= 200,
                     data = data), 200
-    
+
     print(json.dumps(data, indent=4))
 
     for event in data["Events"]["event"]:
@@ -27,17 +28,8 @@ def post_data():
             pass #continue
         #event["frame"]["attribute"] = []
         event["attribute"] = []
-        #print(json.dumps(event, indent=4))
-        event_id = event["@id"]
-        if (event_id in ongoing):
-            ongoing[event_id] = ongoing[event_id] + 1
-        else:
-            ongoing[event_id] = 1
-        
-        if (event["status"] == "ongoing"):
-            pass
-            #print(f'Event {event_id} had {ongoing[event_id]} ongoing passses')
 
+    
     return jsonify(isError= False,
                     message= "Success",
                     statusCode= 200,
