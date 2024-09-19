@@ -83,7 +83,7 @@ def post_data():
     
     if "@type" not in data["Events"]["event"] or data["Events"]["event"]["@type"] != "alarm":
         print("not an alarm")
-        print(data["Events"]["event"])
+        print(json.dumps(data["Events"]["event"], indent=4))
         return ok()
     
     if "spy-name" not in data["Events"]["event"]:
