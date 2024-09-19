@@ -66,12 +66,20 @@ def get_confidence(attributes):
             return float(attribute["#text"])
     return None
 
-def get_duration(attributes):
-    for attribute in attributes:
-        if ":occupancy-conf" in attribute["@name"]:
-            return float(attribute["#text"])
-    return None
-    pass
+def get_duration(latest_event):
+    if "length" not in latest_event:
+        return None
+    
+    unit = latest_event["length"]["@unit"]
+    length = latest_event["length"]["#text"]
+    if unit == "second":
+        return round(float(length), 2)
+    elif unit == "minute":
+        return round(float(length) * 60, 2)
+    elif unit == "hour":
+        return round(float(length * 60 * 60), 2)
+    else:
+        print(f"UNKNOWN UNIT!!!!!: {unit}")
 
 def ok():
     return {}, 200
@@ -145,7 +153,7 @@ def post_data():
             print(f"Event Conf Mean: {tracker.tracker[zone][2].get_mean()}")
             print(f"Event Conf Median: {tracker.tracker[zone][2].get_median()}")
             print(f"Event Conf Latest: {tracker.tracker[zone][2].conf[-1]}")
-            print(json.dumps(tracker.tracker[zone][1], indent=4))
+            print(f"Event Duration: {get_duration(tracker.tracker[zone][2])}s")
             print()
 
 
