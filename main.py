@@ -12,7 +12,10 @@ def get_books():
 def post_data():
     data = request.get_json()
     for event in data["Events"]["event"]:
-        print(json.dumps(event["status"], indent=2))
+        if (event["status"] != "finished"):
+            continue
+
+        print(json.dumps(event, indent=2))
 
 
 
