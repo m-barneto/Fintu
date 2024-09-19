@@ -11,6 +11,8 @@ def get_books():
 @app.route('/', methods=['POST'])
 def post_data():
     data = request.get_json()
+    if data == None:
+        return
     for event in data["Events"]["event"]:
         if (event["status"] != "finished"):
             continue
