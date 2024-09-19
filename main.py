@@ -7,6 +7,7 @@ import json
 app = Flask(__name__)
 books = [{'id': 1, 'title': 'Python Essentials', 'author': 'Jane Doe'}]
 
+global timeout
 timeout = time.time() + 15
 
 class ZoneState:
@@ -78,7 +79,7 @@ def get_books():
 
 @app.route('/', methods=['POST'])
 def post_data():
-
+    global timeout
     data = request.get_json(silent=True)
     if data == None or data["Events"] == None or data["Events"]["event"] == None:
         # print("data or events or events-event was none!")
