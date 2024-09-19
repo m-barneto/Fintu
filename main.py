@@ -5,6 +5,8 @@ import json
 app = Flask(__name__)
 books = [{'id': 1, 'title': 'Python Essentials', 'author': 'Jane Doe'}]
 
+ongoing = set()
+
 @app.route('/', methods=['GET'])
 def get_books():
     return jsonify({'books': books})
@@ -25,6 +27,8 @@ def post_data():
         event["attribute"] = []
         print(event["@id"])
         #print(json.dumps(event, indent=2))
+        ongoing.add(event["status"])
+        print(ongoing)
 
     return jsonify(isError= False,
                     message= "Success",
