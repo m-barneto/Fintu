@@ -69,7 +69,7 @@ def get_books():
 def post_data():
 
     data = request.get_json(silent=True)
-    print(data)
+    print(data["Events"])
     if data == None or "Events" not in data or "event" not in data["Events"].keys():
         # print("data or events or events-event was none!")
         return ok()
