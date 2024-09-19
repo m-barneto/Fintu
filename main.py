@@ -1,10 +1,13 @@
 import datetime
 import logging
+import time
 from flask import Flask, jsonify, request
 import json
 
 app = Flask(__name__)
 books = [{'id': 1, 'title': 'Python Essentials', 'author': 'Jane Doe'}]
+
+timeout = time.time() + 15
 
 class ZoneState:
     def __init__(self, first_conf) -> None:
@@ -40,11 +43,11 @@ class Tracker:
         self.tracker[zone] = (None, None, None)
     
     def set_zone_occupied(self, zone, first_event):
-        self.tracker[zone] = (first_event, None, ZoneState(int(first_event["confidence"])))
+        self.tracker[zone] = (first_event, None, ZoneState(get_confidence(first_event["attribute"])))
     
     def update_zone_last_event(self, zone, last_event):
         state = self.tracker[zone][2]
-        state.conf.append(int(last_event["confidence"]))
+        state.conf.append(get_confidence(last_event["attribute"]))
         self.tracker[zone] = (self.tracker[zone][0], last_event, state)
 
 
@@ -107,7 +110,10 @@ def post_data():
         else:
             # was occupied, this event says its not, so we need to send out our notif!!!
             print("HOLY MOLY ItS HAPPENING!!!!!!")
-            print(f"Event {tracker.tracker[zone][2].conf}")
+            print(f"Event Conf Min: {tracker.tracker[zone][2].get_min()}")
+            print(f"Event Conf Max: {tracker.tracker[zone][2].get_max()}")
+            print(f"Event Conf Mean: {tracker.tracker[zone][2].get_mean()}")
+            print(f"Event Conf Median: {tracker.tracker[zone][2].get_median()}")
             tracker.set_zone_empty(zone)
             print(f"Set {zone} as empty.")
             pass
@@ -118,6 +124,13 @@ def post_data():
     else:
         # zone not occupied
         pass
+
+    if time.time() > timeout:
+        timeout = time.time() + 15
+        print(f"Event Conf Min: {tracker.tracker[zone][2].get_min()}")
+        print(f"Event Conf Max: {tracker.tracker[zone][2].get_max()}")
+        print(f"Event Conf Mean: {tracker.tracker[zone][2].get_mean()}")
+        print(f"Event Conf Median: {tracker.tracker[zone][2].get_median()}")
 
     return {}, 200
 
