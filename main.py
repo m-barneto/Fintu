@@ -20,12 +20,14 @@ def post_data():
                     statusCode= 200,
                     data = data), 200
     
+    print(json.dumps(data, indent=4))
+
     for event in data["Events"]["event"]:
         if (event["status"] != "new"):
             pass #continue
         #event["frame"]["attribute"] = []
         event["attribute"] = []
-        print(json.dumps(event, indent=4))
+        #print(json.dumps(event, indent=4))
         event_id = event["@id"]
         if (event_id in ongoing):
             ongoing[event_id] = ongoing[event_id] + 1
@@ -33,7 +35,8 @@ def post_data():
             ongoing[event_id] = 1
         
         if (event["status"] == "ongoing"):
-            print(f'Event {event_id} had {ongoing[event_id]} ongoing passses')
+            pass
+            #print(f'Event {event_id} had {ongoing[event_id]} ongoing passses')
 
     return jsonify(isError= False,
                     message= "Success",
