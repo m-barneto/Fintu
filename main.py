@@ -10,6 +10,11 @@ books = [{'id': 1, 'title': 'Python Essentials', 'author': 'Jane Doe'}]
 class Tracker:
     def __init__(self) -> None:
         self.tracker = {}
+
+    def ensure_zone_exists(self, zone):
+        if zone not in self.tracker:
+            print(f"Created zone {zone}")
+            self.tracker[zone] = (None, None)
     
     def is_zone_occupied(self, zone):
         first, second = self.tracker.get(zone, (None, None))
@@ -48,11 +53,11 @@ def get_books():
 def post_data():
     data = request.get_json()
     if data == None or "Events" not in data or "event" not in data["Events"]:
-        print("data or events or events-event was none!")
+        # print("data or events or events-event was none!")
         return ok()
     
     if "@type" not in data["Events"]["event"] or data["Events"]["event"]["@type"] != "alarm":
-        print("event wasnt an alarm")
+        # print("event wasnt an alarm")
         return ok()
     
     if "spy-name" not in data["Events"]["event"]:
@@ -60,6 +65,9 @@ def post_data():
         return ok()
 
     zone = data["Events"]["event"]["spy-name"]
+
+    tracker.ensure_zone_exists(zone)
+
     print(zone + " event")
 
     return {}, 200
