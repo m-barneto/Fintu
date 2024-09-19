@@ -94,7 +94,7 @@ def post_data():
         zone = data["spy-name"]
         if zone == "Test Spy":
             return ok()
-        print("Hello")
+        
         tracker.ensure_zone_exists(zone)
 
         event_zone_occupied = True
@@ -138,4 +138,6 @@ def post_data():
     return {}, 200
 
 if __name__ == '__main__':
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
     app.run(debug=True, port=5050)
