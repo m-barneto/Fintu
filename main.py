@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, jsonify, request
 import json
 
@@ -30,4 +31,5 @@ def post_data():
                     data= data), 200
 
 if __name__ == '__main__':
+    logging.basicConfig(filename='error.log',level=logging.DEBUG)
     app.run(debug=True, port=5050)
