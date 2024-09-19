@@ -20,10 +20,11 @@ def post_data():
     
     for event in data["Events"]["event"]:
         if (event["status"] != "new"):
-            continue
+            pass #continue
         event["frame"]["attribute"] = []
         event["attribute"] = []
-        print(json.dumps(event, indent=2))
+        print(event["@id"])
+        #print(json.dumps(event, indent=2))
 
     return jsonify(isError= False,
                     message= "Success",
