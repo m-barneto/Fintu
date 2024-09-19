@@ -88,7 +88,8 @@ def post_data():
         tracker.set_zone_occupied(zone, event)
         print(f"Set {zone} as occupied!")
     else:
-        print("How did we get here?")
+        # zone not occupied
+        pass
 
     return {}, 200
 
