@@ -31,7 +31,7 @@ def post_data():
         else:
             ongoing[event_id] = 1
         
-        if (event["status"] == "new"):
+        if (event["status"] == "ongoing"):
             print(f'Event {event_id} had {ongoing[event_id]} ongoing passses')
 
     return jsonify(isError= False,
