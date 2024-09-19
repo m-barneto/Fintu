@@ -83,6 +83,7 @@ def post_data():
     
     if "@type" not in data["Events"]["event"] or data["Events"]["event"]["@type"] != "alarm":
         print("not an alarm")
+        print(data["Events"]["event"]["@type"])
         return ok()
     
     if "spy-name" not in data["Events"]["event"]:
