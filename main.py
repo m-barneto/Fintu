@@ -23,11 +23,11 @@ def post_data():
 
     print(json.dumps(data, indent=4))
 
-    for event in data["Events"]["event"]:
-        if (event["status"] != "new"):
-            pass #continue
-        #event["frame"]["attribute"] = []
-        event["attribute"] = []
+    # for event in data["Events"]["event"]:
+    #     if (event["status"] != "new"):
+    #         pass #continue
+    #     #event["frame"]["attribute"] = []
+    #     event["attribute"] = []
 
     
     return jsonify(isError= False,
