@@ -32,4 +32,6 @@ def post_data():
 
 if __name__ == '__main__':
     logging.basicConfig(filename='error.log',level=logging.DEBUG)
+    log = logging.getLogger('werkzeug')
+    log.setLevel(logging.ERROR)
     app.run(debug=True, port=5050)
