@@ -25,6 +25,7 @@ def post_data():
             pass #continue
         #event["frame"]["attribute"] = []
         event["attribute"] = []
+        print(json.dumps(event, indent=4))
         event_id = event["@id"]
         if (event_id in ongoing):
             ongoing[event_id] = ongoing[event_id] + 1
