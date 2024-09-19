@@ -78,9 +78,11 @@ def post_data():
     global timeout
     data = request.get_json(silent=True)
     if data == None or data["Events"] == None or data["Events"]["event"] == None:
+        print("No data/events/events.event")
         return ok()
     
     if "@type" not in data["Events"]["event"] or data["Events"]["event"]["@type"] != "alarm":
+        print("not an alarm")
         return ok()
     
     if "spy-name" not in data["Events"]["event"]:
