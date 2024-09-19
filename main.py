@@ -10,8 +10,14 @@ def get_books():
 
 @app.route('/', methods=['POST'])
 def post_data():
-    data = request.form
-    print(json.dumps(request.get_json(), indent=2))
+    data = request.get_json()
+    for event in data["Events"]:
+        print(json.dumps(event, indent=2))
+
+
+
+
+
     return jsonify(isError= False,
                     message= "Success",
                     statusCode= 200,
