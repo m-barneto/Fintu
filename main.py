@@ -11,7 +11,7 @@ def get_books():
 @app.route('/', methods=['POST'])
 def post_data():
     data = request.get_json()
-    for event in data["Events"]:
+    for event in data["Events"]["event"]:
         print(json.dumps(event, indent=2))
 
 
