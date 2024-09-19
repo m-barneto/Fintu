@@ -19,8 +19,7 @@ def post_data():
                     data = data), 200
     
     for event in data["Events"]["event"]:
-        if (event["status"] != "finished"):
-            print(event["status"])
+        if (event["status"] != "new"):
             continue
 
         print(json.dumps(event, indent=2))
