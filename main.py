@@ -82,6 +82,7 @@ def post_data():
         return ok()
     
     for data in json_data["Events"]["event"]:
+        print(json.dumps(data, indent=4))
         if "@type" not in data or data["@type"] != "alarm":
             return ok()
         
