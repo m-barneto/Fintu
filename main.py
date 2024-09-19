@@ -6,6 +6,22 @@ import json
 app = Flask(__name__)
 books = [{'id': 1, 'title': 'Python Essentials', 'author': 'Jane Doe'}]
 
+class ZoneState:
+    def __init__(self, first_conf) -> None:
+        self.conf = [ first_conf ]
+    
+    def get_min(self):
+        return min(self.conf)
+    
+    def get_max(self):
+        return max(self.conf)
+    
+    def get_mean(self):
+        return round(sum(self.conf) / len(self.conf), 2)
+
+    def get_median(self):
+        self.conf.sort()
+        return self.conf[int(len(self.conf) / 2)]
 
 class Tracker:
     def __init__(self) -> None:
@@ -51,7 +67,8 @@ def get_books():
 
 @app.route('/', methods=['POST'])
 def post_data():
-    data = request.get_json()
+
+    data = request.get_json(silent=True)
     if data == None or "Events" not in data or "event" not in data["Events"]:
         # print("data or events or events-event was none!")
         return ok()
