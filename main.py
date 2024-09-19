@@ -76,62 +76,64 @@ def get_books():
 @app.route('/', methods=['POST'])
 def post_data():
     global timeout
-    data = request.get_json(silent=True)
-    if data == None or data["Events"] == None or data["Events"]["event"] == None:
+    json_data = request.get_json(silent=True)
+    if json_data == None or json_data["Events"] == None or json_data["Events"]["event"] == None:
         print("No data/events/events.event")
         return ok()
     
-    if "@type" not in data["Events"]["event"] or data["Events"]["event"]["@type"] != "alarm":
-        print("not an alarm")
-        print(json.dumps(data["Events"]["event"], indent=4))
-        return ok()
-    
-    if "spy-name" not in data["Events"]["event"]:
-        print(json.dumps(data["Events"]["event"], indent=4))
-        return ok()
+    for data in json_data["Events"]["event"]:
 
-    zone = data["Events"]["event"]["spy-name"]
-    if zone == "Test Spy":
-        return ok()
-    tracker.ensure_zone_exists(zone)
+        if "@type" not in data["Events"]["event"] or data["Events"]["event"]["@type"] != "alarm":
+            print("not an alarm")
+            print(json.dumps(data["Events"]["event"], indent=4))
+            return ok()
+        
+        if "spy-name" not in data["Events"]["event"]:
+            print(json.dumps(data["Events"]["event"], indent=4))
+            return ok()
 
-    event_zone_occupied = True
-    if "Empty" in data["Events"]["event"]["subtitle"]:
-        event_zone_occupied = False
+        zone = data["Events"]["event"]["spy-name"]
+        if zone == "Test Spy":
+            return ok()
+        tracker.ensure_zone_exists(zone)
 
-    event = data["Events"]["event"]
+        event_zone_occupied = True
+        if "Empty" in data["Events"]["event"]["subtitle"]:
+            event_zone_occupied = False
 
-    if tracker.is_zone_occupied(zone):
-        if event_zone_occupied:
-            # if its occupied, we want to update the last_event with this event
-            tracker.update_zone_last_event(zone, event)
+        event = data["Events"]["event"]
 
+        if tracker.is_zone_occupied(zone):
+            if event_zone_occupied:
+                # if its occupied, we want to update the last_event with this event
+                tracker.update_zone_last_event(zone, event)
+
+            else:
+                # was occupied, this event says its not, so we need to send out our notif!!!
+                print("HOLY MOLY ItS HAPPENING!!!!!!")
+                print(f"Event Conf Min: {tracker.tracker[zone][2].get_min()}")
+                print(f"Event Conf Max: {tracker.tracker[zone][2].get_max()}")
+                print(f"Event Conf Mean: {tracker.tracker[zone][2].get_mean()}")
+                print(f"Event Conf Median: {tracker.tracker[zone][2].get_median()}")
+                print(f"Event Conf Latest: {tracker.tracker[zone][2].conf[-1]}")
+                tracker.set_zone_empty(zone)
+                print(f"Set {zone} as empty.")
+                pass
+        elif event_zone_occupied:
+            # zone is not occupied, but now this event says it is, set first_event up
+            tracker.set_zone_occupied(zone, event)
+            print(f"Set {zone} as occupied!")
         else:
-            # was occupied, this event says its not, so we need to send out our notif!!!
-            print("HOLY MOLY ItS HAPPENING!!!!!!")
+            # zone not occupied
+            pass
+
+        if time.time() > timeout and event_zone_occupied:
+            timeout = time.time() + 15
             print(f"Event Conf Min: {tracker.tracker[zone][2].get_min()}")
             print(f"Event Conf Max: {tracker.tracker[zone][2].get_max()}")
             print(f"Event Conf Mean: {tracker.tracker[zone][2].get_mean()}")
             print(f"Event Conf Median: {tracker.tracker[zone][2].get_median()}")
             print(f"Event Conf Latest: {tracker.tracker[zone][2].conf[-1]}")
-            tracker.set_zone_empty(zone)
-            print(f"Set {zone} as empty.")
-            pass
-    elif event_zone_occupied:
-        # zone is not occupied, but now this event says it is, set first_event up
-        tracker.set_zone_occupied(zone, event)
-        print(f"Set {zone} as occupied!")
-    else:
-        # zone not occupied
-        pass
-
-    if time.time() > timeout and event_zone_occupied:
-        timeout = time.time() + 15
-        print(f"Event Conf Min: {tracker.tracker[zone][2].get_min()}")
-        print(f"Event Conf Max: {tracker.tracker[zone][2].get_max()}")
-        print(f"Event Conf Mean: {tracker.tracker[zone][2].get_mean()}")
-        print(f"Event Conf Median: {tracker.tracker[zone][2].get_median()}")
-        print(f"Event Conf Latest: {tracker.tracker[zone][2].conf[-1]}")
 
     return {}, 200
 
