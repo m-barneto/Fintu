@@ -21,7 +21,7 @@ def post_data():
     for event in data["Events"]["event"]:
         if (event["status"] != "new"):
             pass #continue
-        event["frame"]["attribute"] = []
+        #event["frame"]["attribute"] = []
         event["attribute"] = []
         print(event["@id"])
         #print(json.dumps(event, indent=2))
