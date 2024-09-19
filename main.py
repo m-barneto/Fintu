@@ -20,6 +20,7 @@ def post_data():
     
     for event in data["Events"]["event"]:
         if (event["status"] != "finished"):
+            print(event["status"])
             continue
 
         print(json.dumps(event, indent=2))
