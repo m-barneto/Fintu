@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+import json
 
 app = Flask(__name__)
 books = [{'id': 1, 'title': 'Python Essentials', 'author': 'Jane Doe'}]
@@ -10,7 +11,8 @@ def get_books():
 @app.route('/', methods=['POST'])
 def post_data():
     data = request.form
-    print(data)
+    jsonshit = json.loads(request.get_json())
+    print(json.dumps(request.get_json(), indent=2))
     return jsonify(isError= False,
                     message= "Success",
                     statusCode= 200,
