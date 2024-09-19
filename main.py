@@ -60,6 +60,12 @@ def print_status():
     for zone in tracker.tracker:
         print(f'{zone}: {tracker.is_zone_occupied(zone)}')
 
+def get_confidence(attributes):
+    for attribute in attributes:
+        if ":occupancy-conf" in attribute["@name"]:
+            return float(attribute["#text"])
+    return None
+
 def ok():
     return {}, 200
 
@@ -96,8 +102,7 @@ def post_data():
         if event_zone_occupied:
             # if its occupied, we want to update the last_event with this event
             tracker.update_zone_last_event(zone, event)
-            print(f"Event {tracker.tracker[zone][2].conf}")
-            print(event["confidence"])
+            print(get_confidence(event["attribute"]))
 
         else:
             # was occupied, this event says its not, so we need to send out our notif!!!
