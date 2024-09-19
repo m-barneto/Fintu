@@ -106,7 +106,6 @@ def post_data():
         if event_zone_occupied:
             # if its occupied, we want to update the last_event with this event
             tracker.update_zone_last_event(zone, event)
-            print(get_confidence(event["attribute"]))
 
         else:
             # was occupied, this event says its not, so we need to send out our notif!!!
