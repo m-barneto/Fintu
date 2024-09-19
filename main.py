@@ -83,25 +83,25 @@ def post_data():
     
     for data in json_data["Events"]["event"]:
 
-        if "@type" not in data["Events"]["event"] or data["Events"]["event"]["@type"] != "alarm":
+        if "@type" not in data or data["@type"] != "alarm":
             print("not an alarm")
-            print(json.dumps(data["Events"]["event"], indent=4))
+            print(json.dumps(data, indent=4))
             return ok()
         
-        if "spy-name" not in data["Events"]["event"]:
-            print(json.dumps(data["Events"]["event"], indent=4))
+        if "spy-name" not in data:
+            print(json.dumps(data, indent=4))
             return ok()
 
-        zone = data["Events"]["event"]["spy-name"]
+        zone = data["spy-name"]
         if zone == "Test Spy":
             return ok()
         tracker.ensure_zone_exists(zone)
 
         event_zone_occupied = True
-        if "Empty" in data["Events"]["event"]["subtitle"]:
+        if "Empty" in data["subtitle"]:
             event_zone_occupied = False
 
-        event = data["Events"]["event"]
+        event = data
 
         if tracker.is_zone_occupied(zone):
             if event_zone_occupied:
