@@ -97,6 +97,8 @@ def post_data():
             # if its occupied, we want to update the last_event with this event
             tracker.update_zone_last_event(zone, event)
             print(f"Event {tracker.tracker[zone][2].conf}")
+            print(event["confidence"])
+
         else:
             # was occupied, this event says its not, so we need to send out our notif!!!
             print("HOLY MOLY ItS HAPPENING!!!!!!")
