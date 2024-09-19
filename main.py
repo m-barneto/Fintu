@@ -11,7 +11,7 @@ def get_books():
 @app.route('/', methods=['POST'])
 def post_data():
     data = request.get_json()
-
+    print(data)
     if data == None or data["Events"] == None:
         return jsonify(isError= False,
                     message= "Success",
