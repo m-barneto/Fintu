@@ -51,7 +51,7 @@ def post_data():
         print("data or events or events-event was none!")
         return ok()
     
-    if data["Events"]["event"]["@type"] != "alarm":
+    if "@type" in data["Events"]["event"] and data["Events"]["event"]["@type"] != "alarm":
         print("event wasnt an alarm")
         return ok()
     
