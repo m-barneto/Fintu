@@ -65,10 +65,30 @@ def post_data():
         return ok()
 
     zone = data["Events"]["event"]["spy-name"]
-
     tracker.ensure_zone_exists(zone)
 
-    print(zone + " event")
+    event_zone_occupied = True
+    if "Empty" in data["Events"]["event"]["subtitle"]:
+        event_zone_occupied = False
+
+    event = data["Events"]["event"]
+
+    if tracker.is_zone_occupied(zone):
+        if event_zone_occupied:
+            # if its occupied, we want to update the last_event with this event
+            tracker.update_zone_last_event(zone, event)
+        else:
+            # was occupied, this event says its not, so we need to send out our notif!!!
+            print("HOLY MOLY ItS HAPPENING!!!!!!")
+            tracker.set_zone_empty(zone)
+            print(f"Set {zone} as empty.")
+            pass
+    elif event_zone_occupied:
+        # zone is not occupied, but now this event says it is, set first_event up
+        tracker.set_zone_occupied(zone, event)
+        print(f"Set {zone} as occupied!")
+    else:
+        print("How did we get here?")
 
     return {}, 200
 
