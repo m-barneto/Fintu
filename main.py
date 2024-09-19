@@ -94,6 +94,8 @@ def post_data():
         return ok()
 
     zone = data["Events"]["event"]["spy-name"]
+    if zone == "Test Spy":
+        return ok()
     tracker.ensure_zone_exists(zone)
 
     event_zone_occupied = True
