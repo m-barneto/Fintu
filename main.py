@@ -40,11 +40,11 @@ class Tracker:
         self.tracker[zone] = (None, None, None)
     
     def set_zone_occupied(self, zone, first_event):
-        self.tracker[zone] = (first_event, None, ZoneState(int(first_event["Events"]["event"]["confidence"])))
+        self.tracker[zone] = (first_event, None, ZoneState(int(first_event["confidence"])))
     
     def update_zone_last_event(self, zone, last_event):
         state = self.tracker[zone][2]
-        state.conf.append(int(last_event["Events"]["event"]["confidence"]))
+        state.conf.append(int(last_event["confidence"]))
         self.tracker[zone] = (self.tracker[zone][0], last_event, state)
 
 
