@@ -10,7 +10,6 @@ books = [{'id': 1, 'title': 'Python Essentials', 'author': 'Jane Doe'}]
 class Tracker:
     def __init__(self) -> None:
         self.tracker = {}
-        super.__init__(self)
     
     def is_zone_occupied(self, zone):
         first, second = self.tracker.get(zone, (None, None))
