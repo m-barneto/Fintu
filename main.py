@@ -55,10 +55,6 @@ class Tracker:
 tracker = Tracker()
 
 
-timestr = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-
-file = open(f'{timestr}.txt', 'w')
-
 def print_status():
     print("Zone statuses:")
     for zone in tracker.tracker:
@@ -137,8 +133,4 @@ def post_data():
     return {}, 200
 
 if __name__ == '__main__':
-    logging.basicConfig(filename='error.log',level=logging.DEBUG)
-    log = logging.getLogger('werkzeug')
-    log.setLevel(logging.ERROR)
     app.run(debug=True, port=5050)
-    file.close()
