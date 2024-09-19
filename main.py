@@ -1,4 +1,4 @@
-from datetime import time
+import datetime
 import logging
 from flask import Flask, jsonify, request
 import json
@@ -8,7 +8,7 @@ books = [{'id': 1, 'title': 'Python Essentials', 'author': 'Jane Doe'}]
 
 ongoing = {}
 
-timestr = time.strftime("%Y%m%d-%H%M%S")
+timestr = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
 file = open(f'{timestr}.txt', 'w')
 
