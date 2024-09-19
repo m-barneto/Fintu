@@ -81,6 +81,10 @@ def post_data():
         print("No data/events/events.event")
         return ok()
     
+    should_print = time.time() > timeout
+    if should_print:
+        timeout = time.time() + 15
+
     for data in json_data["Events"]["event"]:
         #print(json.dumps(data, indent=4))
         if "@type" not in data or data["@type"] != "alarm":
@@ -127,13 +131,15 @@ def post_data():
             # zone not occupied
             pass
 
-        if time.time() > timeout and event_zone_occupied:
-            timeout = time.time() + 15
+        if should_print and event_zone_occupied:
+            print(zone)
             print(f"Event Conf Min: {tracker.tracker[zone][2].get_min()}")
             print(f"Event Conf Max: {tracker.tracker[zone][2].get_max()}")
             print(f"Event Conf Mean: {tracker.tracker[zone][2].get_mean()}")
             print(f"Event Conf Median: {tracker.tracker[zone][2].get_median()}")
             print(f"Event Conf Latest: {tracker.tracker[zone][2].conf[-1]}")
+            print()
+
 
     return {}, 200
 
