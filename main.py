@@ -132,6 +132,7 @@ def post_data():
         print(f"Event Conf Max: {tracker.tracker[zone][2].get_max()}")
         print(f"Event Conf Mean: {tracker.tracker[zone][2].get_mean()}")
         print(f"Event Conf Median: {tracker.tracker[zone][2].get_median()}")
+        print(f"Event Conf Latest: {tracker.tracker[zone][2].conf[-1]}")
 
     return {}, 200
 
