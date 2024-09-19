@@ -10,7 +10,9 @@ def get_books():
 
 @app.route('/', methods=['POST'])
 def post_data():
+    print("hello")
     data = request.get_json()
+    print("asdasd")
 
     if data == None or data["Events"] == None:
         return jsonify(isError= False,
@@ -18,6 +20,7 @@ def post_data():
                     statusCode= 200,
                     data = data), 200
     
+    print("raaaaa")
     for event in data["Events"]["event"]:
         if (event["status"] != "finished"):
             continue
@@ -26,6 +29,7 @@ def post_data():
 
 
 
+    print("gyg")
 
 
     return jsonify(isError= False,
